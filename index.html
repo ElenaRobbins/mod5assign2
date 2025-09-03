@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Support Tickets</title>
+<!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+<h1>Check Your Support Tickets</h1>
+
+<!-- Ask for Employee ID -->
+Enter your Employee ID: <input type="text" id="empID" placeholder="exp123" />
+<button onclick="getTickets()">Show My Tickets</button>
+
+<!-- Table to show tickets -->
+<table border="1" id="ticketTable" style="margin-top:20px; width:100%;">
+<tr>
+  <th>Date</th>
+  <th>Employee ID</th>
+  <th>Name</th>
+  <th>Description</th>
+  <th>Status</th>
+  <th>Response</th>
+</tr>
+</table>
+
+<script>
+// When user clicks the button
+function getTickets() {
+  var id = document.getElementById('empID').value; // Get what user typed
+  if (id === "") {
+    alert("Please enter your Employee ID");
+    return;
+  }
+
+  // XML file
+  $.ajax({
+    url: 'tickets.xml',
+    dataType: 'xml',
+    success: function(data) {
+      // Remove old tickets (keep table header)
+      $('#ticketTable tr:not(:first)').remove();
+
+      // Find all tickets
+      $(data).find('ticket').each(function() {
+        var ticketID = $(this).find('employeeID').text();
+
+        // If it matches the entered ID
+        if (ticketID === id) {
+          var date = $(this).find('date').text();
+          var firstName = $(this).find('firstName').text();
+          var lastName = $(this).find('lastName').text();
+          var name = firstName + " " + lastName;
+          var desc = $(this).find('description').text();
+          var status = $(this).find('status').text();
+          var response = $(this).find('response').text();
+
+          // Add a row to the table
+          $('#ticketTable').append('<tr>' +
+            '<td>' + date + '</td>' +
+            '<td>' + ticketID + '</td>' +
+            '<td>' + name + '</td>' +
+            '<td>' + desc + '</td>' +
+            '<td>' + status + '</td>' +
+            '<td>' + response + '</td>' +
+            '</tr>');
+        }
+      });
+    },
+    error: function() {
+      alert("Could not load data");
+    }
+  });
+}
+</script>
+
+</body>
+</html>

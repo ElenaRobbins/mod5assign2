@@ -1,0 +1,12 @@
+<tickets>
+  <ticket>
+    <date>2023-09-01</date>
+    <employeeID>exp123</employeeID>
+    <firstName>Elena</firstName>
+    <lastName>Robbins</lastName>
+    <description>Cannot connect to Wi-Fi</description>
+    <status>Open</status>
+    <response>Try restarting your router.</response>
+  </ticket>
+  <!-- More tickets... -->
+</tickets>
